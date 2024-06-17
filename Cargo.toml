@@ -6,7 +6,7 @@ exclude = [".github"]
 
 description = "Utilities for font color and style decoration in terminal."
 categories = ["command-line-interface", "command-line-utilities"]
-keywords = ["ansi", "color", "cli", "escape", "terminal", "terminal-font"]
+keywords = ["ansi", "color", "cli", "escape", "terminal"]
 
 repository = "https://github.com/treeinfra/terminal-font"
 license = "MIT"

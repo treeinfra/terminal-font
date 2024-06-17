@@ -135,3 +135,27 @@ pub mod background {
     pub const BRIGHT_CYAN: &str = escape!(106);
     pub const BRIGHT_WHITE: &str = escape!(107);
 }
+
+/// Customize escape color code tools.
+pub mod custom {
+    pub const FOREGROUND: u8 = 38;
+    pub const BACKGROUND: u8 = 48;
+    pub const CODE_MODE: u8 = 5;
+    pub const RGB_MODE: u8 = 2;
+
+    pub fn foreground_code(code: u8) -> String {
+        escape!(FOREGROUND, CODE_MODE, code)
+    }
+
+    pub fn background_code(code: u8) -> String {
+        escape!(BACKGROUND, CODE_MODE, code)
+    }
+
+    pub fn foreground_rgb(r: u8, g: u8, b: u8) -> String {
+        escape!(FOREGROUND, RGB_MODE, r, g, b)
+    }
+
+    pub fn background_rgb(r: u8, g: u8, b: u8) -> String {
+        escape!(BACKGROUND, RGB_MODE, r, g, b)
+    }
+}

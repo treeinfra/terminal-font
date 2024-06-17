@@ -11,4 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: sh review.sh
-      - run: cargo publish --token ${{ secrets.CRATES_IO_TOKEN }}
+      - uses: treeinfra/publish-rust@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,5 +1,5 @@
 use crate::escape::style::*;
-use crate::escape::{cancel, foreground};
+use crate::escape::{background, cancel, foreground};
 
 pub trait Decorate {
     /// Simply wrap a prefix and a suffix.
@@ -86,7 +86,7 @@ pub trait SimpleStyle: Decorate {
 }
 
 /// Encapsulation on the [Decorate] trait with
-/// commonly used escape codes for style decorations.
+/// commonly used escape codes for foreground color decorations.
 ///
 /// Those methods won't check whether there are conflicts in the raw string.
 /// The only thing to do is wrap the prefix and the suffix.
@@ -178,5 +178,99 @@ pub trait SimpleForeground: Decorate {
     }
 }
 
+/// Encapsulation on the [Decorate] trait with
+/// commonly used escape codes for background color decorations.
+///
+/// Those methods won't check whether there are conflicts in the raw string.
+/// The only thing to do is wrap the prefix and the suffix.
+/// Those methods are usually used when content is predicated,
+/// and performance is more important.
+///
+/// ```rust
+/// use terminal_font::decorate::SimpleBackground;
+/// assert_eq!(" hello ".simple_black_bg(), "\x1b[40m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_red_bg(), "\x1b[41m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_green_bg(), "\x1b[42m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_yellow_bg(), "\x1b[43m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_blue_bg(), "\x1b[44m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_magenta_bg(), "\x1b[45m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_cyan_bg(), "\x1b[46m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_white_bg(), "\x1b[47m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_hi_black_bg(), "\x1b[100m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_hi_red_bg(), "\x1b[101m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_hi_green_bg(), "\x1b[102m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_hi_yellow_bg(), "\x1b[103m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_hi_blue_bg(), "\x1b[104m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_hi_magenta_bg(), "\x1b[105m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_hi_cyan_bg(), "\x1b[106m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_hi_white_bg(), "\x1b[107m hello \x1b[49m");
+/// ```
+pub trait SimpleBackground: Decorate {
+    fn simple_black_bg(&self) -> String {
+        self.wrap(background::BLACK, cancel::BACKGROUND)
+    }
+
+    fn simple_red_bg(&self) -> String {
+        self.wrap(background::RED, cancel::BACKGROUND)
+    }
+
+    fn simple_green_bg(&self) -> String {
+        self.wrap(background::GREEN, cancel::BACKGROUND)
+    }
+
+    fn simple_yellow_bg(&self) -> String {
+        self.wrap(background::YELLOW, cancel::BACKGROUND)
+    }
+
+    fn simple_blue_bg(&self) -> String {
+        self.wrap(background::BLUE, cancel::BACKGROUND)
+    }
+
+    fn simple_magenta_bg(&self) -> String {
+        self.wrap(background::MAGENTA, cancel::BACKGROUND)
+    }
+
+    fn simple_cyan_bg(&self) -> String {
+        self.wrap(background::CYAN, cancel::BACKGROUND)
+    }
+
+    fn simple_white_bg(&self) -> String {
+        self.wrap(background::WHITE, cancel::BACKGROUND)
+    }
+
+    fn simple_hi_black_bg(&self) -> String {
+        self.wrap(background::BRIGHT_BLACK, cancel::BACKGROUND)
+    }
+
+    fn simple_hi_red_bg(&self) -> String {
+        self.wrap(background::BRIGHT_RED, cancel::BACKGROUND)
+    }
+
+    fn simple_hi_green_bg(&self) -> String {
+        self.wrap(background::BRIGHT_GREEN, cancel::BACKGROUND)
+    }
+
+    fn simple_hi_yellow_bg(&self) -> String {
+        self.wrap(background::BRIGHT_YELLOW, cancel::BACKGROUND)
+    }
+
+    fn simple_hi_blue_bg(&self) -> String {
+        self.wrap(background::BRIGHT_BLUE, cancel::BACKGROUND)
+    }
+
+    fn simple_hi_magenta_bg(&self) -> String {
+        self.wrap(background::BRIGHT_MAGENTA, cancel::BACKGROUND)
+    }
+
+    fn simple_hi_cyan_bg(&self) -> String {
+        self.wrap(background::BRIGHT_CYAN, cancel::BACKGROUND)
+    }
+
+    fn simple_hi_white_bg(&self) -> String {
+        self.wrap(background::BRIGHT_WHITE, cancel::BACKGROUND)
+    }
+}
+
 impl<T: Decorate + AsRef<str>> SimpleStyle for T {}
 impl<T: Decorate + AsRef<str>> SimpleForeground for T {}
+impl<T: Decorate + AsRef<str>> SimpleBackground for T {}

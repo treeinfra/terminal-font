@@ -2,7 +2,7 @@
 name = "terminal-font"
 version = "0.0.1"
 edition = "2021"
-exclude = ["*.sh", ".github"]
+exclude = [".github"]
 
 description = "Utilities for font color and style decoration in terminal."
 categories = ["command-line-interface", "command-line-utilities"]

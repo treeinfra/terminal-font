@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: treeinfra/check-version@main
+        with: {manager: cargo}
+
       - run: sh review.sh
-      - uses: treeinfra/publish-rust@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - run: cargo publish --token ${{ secrets.CRATES_IO_TOKEN }}

@@ -206,47 +206,47 @@ pub trait SimpleForeground: Decorate {
 /// assert_eq!(" hello ".simple_hi_white_bg(), "\x1b[107m hello \x1b[49m");
 /// ```
 pub trait SimpleBackground: Decorate {
-    fn simple_black_bg(&self) -> String {
+    fn simple_bg_black(&self) -> String {
         self.wrap(background::BLACK, cancel::BACKGROUND)
     }
 
-    fn simple_red_bg(&self) -> String {
+    fn simple_bg_red(&self) -> String {
         self.wrap(background::RED, cancel::BACKGROUND)
     }
 
-    fn simple_green_bg(&self) -> String {
+    fn simple_bg_green(&self) -> String {
         self.wrap(background::GREEN, cancel::BACKGROUND)
     }
 
-    fn simple_yellow_bg(&self) -> String {
+    fn simpl_bg_yellow(&self) -> String {
         self.wrap(background::YELLOW, cancel::BACKGROUND)
     }
 
-    fn simple_blue_bg(&self) -> String {
+    fn simple_bg_blue(&self) -> String {
         self.wrap(background::BLUE, cancel::BACKGROUND)
     }
 
-    fn simple_magenta_bg(&self) -> String {
+    fn simple_bg_magenta(&self) -> String {
         self.wrap(background::MAGENTA, cancel::BACKGROUND)
     }
 
-    fn simple_cyan_bg(&self) -> String {
+    fn simple_bg_cyan(&self) -> String {
         self.wrap(background::CYAN, cancel::BACKGROUND)
     }
 
-    fn simple_white_bg(&self) -> String {
+    fn simple_bg_white(&self) -> String {
         self.wrap(background::WHITE, cancel::BACKGROUND)
     }
 
-    fn simple_hi_black_bg(&self) -> String {
+    fn simple_bg_hi_black(&self) -> String {
         self.wrap(background::BRIGHT_BLACK, cancel::BACKGROUND)
     }
 
-    fn simple_hi_red_bg(&self) -> String {
+    fn simple_bg_hi_red(&self) -> String {
         self.wrap(background::BRIGHT_RED, cancel::BACKGROUND)
     }
 
-    fn simple_hi_green_bg(&self) -> String {
+    fn simple_bg_hi_green(&self) -> String {
         self.wrap(background::BRIGHT_GREEN, cancel::BACKGROUND)
     }
 
@@ -254,19 +254,19 @@ pub trait SimpleBackground: Decorate {
         self.wrap(background::BRIGHT_YELLOW, cancel::BACKGROUND)
     }
 
-    fn simple_hi_blue_bg(&self) -> String {
+    fn simple_bg_hi_blue(&self) -> String {
         self.wrap(background::BRIGHT_BLUE, cancel::BACKGROUND)
     }
 
-    fn simple_hi_magenta_bg(&self) -> String {
+    fn simple_bg_hi_magenta(&self) -> String {
         self.wrap(background::BRIGHT_MAGENTA, cancel::BACKGROUND)
     }
 
-    fn simple_hi_cyan_bg(&self) -> String {
+    fn simple_bg_hi_cyan(&self) -> String {
         self.wrap(background::BRIGHT_CYAN, cancel::BACKGROUND)
     }
 
-    fn simple_hi_white_bg(&self) -> String {
+    fn simple_bg_hi_white(&self) -> String {
         self.wrap(background::BRIGHT_WHITE, cancel::BACKGROUND)
     }
 }

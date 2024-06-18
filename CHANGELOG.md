@@ -1,3 +1,10 @@
+## 0.1.0
+
+- Custom colors.
+- Optimize exports.
+- Optimize generics.
+- Rename colors with bg prefix.
+
 ## 0.0.2
 
 - Trait encapsulations.

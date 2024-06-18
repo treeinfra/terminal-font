@@ -3,8 +3,9 @@ use crate::{cancel, custom::*, decorate::Decorate};
 /// It's strongly recommended to initialize a [RGBColor] object,
 /// and use it for further decorations, to make clear what color
 /// you are exactly use during the whole application's lifetime.
-///
-/// You can initialize the color with [RGBColor::from] method.
+/// You can also initialize the color
+/// with [RGBColor::from] method from other formats,
+/// including rgb tuples and a single hex number.
 #[derive(Clone, Copy)]
 pub struct RGBColor {
     pub r: u8,
@@ -12,9 +13,44 @@ pub struct RGBColor {
     pub b: u8,
 }
 
-impl RGBColor {
-    pub fn from(r: u8, g: u8, b: u8) -> RGBColor {
-        RGBColor { r, g, b }
+impl From<(u8, u8, u8)> for RGBColor {
+    /// Generate [RGBColor] from a tuple of [u8] numbers,
+    /// which the first is red, the second is green, and the third is blue.
+    /// Attention that the input value is a tuple rather than three [u8]s.
+    ///
+    /// ```rust
+    /// use terminal_font::custom_color::*;
+    /// let color = RGBColor::from((12, 34, 56));
+    /// assert_eq!(color.r, 12);
+    /// assert_eq!(color.g, 34);
+    /// assert_eq!(color.b, 56);
+    /// ```
+    fn from(value: (u8, u8, u8)) -> Self {
+        RGBColor {
+            r: value.0,
+            g: value.1,
+            b: value.2,
+        }
+    }
+}
+
+impl From<u32> for RGBColor {
+    /// Generate [RGBColor] from a [u32] number,
+    /// especially from the hex code.
+    ///
+    /// ```rust
+    /// use terminal_font::custom_color::*;
+    /// let color = RGBColor::from(0x123456);
+    /// assert_eq!(color.r, 0x12);
+    /// assert_eq!(color.g, 0x34);
+    /// assert_eq!(color.b, 0x56);
+    /// ```
+    fn from(value: u32) -> Self {
+        RGBColor {
+            r: ((value >> 16) & 0xff) as u8,
+            g: ((value >> 8) & 0xff) as u8,
+            b: (value & 0xff) as u8,
+        }
     }
 }
 
@@ -50,7 +86,7 @@ impl<T: Decorate + AsRef<str>> SimpleCustomColor<u8> for T {
 /// RGB ([RGBColor]) version of custom color decoration.
 /// ```rust
 /// use terminal_font::custom_color::*;
-/// let c = RGBColor::from(143, 76, 78);
+/// let c = RGBColor::from((143, 76, 78));
 /// assert_eq!(" hello ".simple_fg(c), "\x1b[38;2;143;76;78m hello \x1b[39m");
 /// assert_eq!(" hello ".simple_bg(c), "\x1b[48;2;143;76;78m hello \x1b[49m");
 /// ```

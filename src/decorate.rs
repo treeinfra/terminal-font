@@ -1,5 +1,4 @@
-use crate::escape::style::*;
-use crate::escape::{background, cancel, foreground};
+use crate::escape::{background, cancel, foreground, style::*};
 
 pub trait Decorate {
     /// Simply wrap a prefix and a suffix.
@@ -13,12 +12,34 @@ pub trait Decorate {
     /// use terminal_font::decorate::Decorate;
     /// assert_eq!("hello".wrap("[", "]"), "[hello]");
     /// ```
-    fn wrap(&self, prefix: &str, suffix: &str) -> String;
+    ///
+    /// ## Generics and performance
+    ///
+    /// The input parameters `prefix` and `suffix`, and even the `self`,
+    /// can either be &[str] or [String] ([AsRef<T>]).
+    /// Such generics will not have bad effect on performance
+    /// because when formatting, a [String] will be converted into &[str].
+    /// And when calling [AsRef<T>::as_ref] on &[str],
+    /// it will just return itself, and such process will be optimized
+    /// by the compiler, especially in production mode.
+    ///
+    /// ```rust
+    /// use terminal_font::decorate::Decorate;
+    /// let prefix = "[";
+    /// let suffix = "]";
+    /// let prefix_string = String::from(prefix);
+    /// let suffix_string = String::from(suffix);
+    /// assert_eq!("hello".wrap(prefix, suffix), "[hello]");
+    /// // assert_eq!("hello".wrap(prefix, suffix_string), "[hello]");
+    /// // assert_eq!("hello".wrap(prefix_string, suffix), "[hello]");
+    /// assert_eq!("hello".wrap(prefix_string, suffix_string), "[hello]");
+    /// ```
+    fn wrap<T: AsRef<str>>(&self, prefix: T, suffix: T) -> String;
 }
 
 impl<T: AsRef<str>> Decorate for T {
-    fn wrap(&self, prefix: &str, suffix: &str) -> String {
-        format!("{}{}{}", prefix, self.as_ref(), suffix)
+    fn wrap<U: AsRef<str>>(&self, prefix: U, suffix: U) -> String {
+        format!("{}{}{}", prefix.as_ref(), self.as_ref(), suffix.as_ref())
     }
 }
 
@@ -188,22 +209,22 @@ pub trait SimpleForeground: Decorate {
 ///
 /// ```rust
 /// use terminal_font::decorate::SimpleBackground;
-/// assert_eq!(" hello ".simple_black_bg(), "\x1b[40m hello \x1b[49m");
-/// assert_eq!(" hello ".simple_red_bg(), "\x1b[41m hello \x1b[49m");
-/// assert_eq!(" hello ".simple_green_bg(), "\x1b[42m hello \x1b[49m");
-/// assert_eq!(" hello ".simple_yellow_bg(), "\x1b[43m hello \x1b[49m");
-/// assert_eq!(" hello ".simple_blue_bg(), "\x1b[44m hello \x1b[49m");
-/// assert_eq!(" hello ".simple_magenta_bg(), "\x1b[45m hello \x1b[49m");
-/// assert_eq!(" hello ".simple_cyan_bg(), "\x1b[46m hello \x1b[49m");
-/// assert_eq!(" hello ".simple_white_bg(), "\x1b[47m hello \x1b[49m");
-/// assert_eq!(" hello ".simple_hi_black_bg(), "\x1b[100m hello \x1b[49m");
-/// assert_eq!(" hello ".simple_hi_red_bg(), "\x1b[101m hello \x1b[49m");
-/// assert_eq!(" hello ".simple_hi_green_bg(), "\x1b[102m hello \x1b[49m");
-/// assert_eq!(" hello ".simple_hi_yellow_bg(), "\x1b[103m hello \x1b[49m");
-/// assert_eq!(" hello ".simple_hi_blue_bg(), "\x1b[104m hello \x1b[49m");
-/// assert_eq!(" hello ".simple_hi_magenta_bg(), "\x1b[105m hello \x1b[49m");
-/// assert_eq!(" hello ".simple_hi_cyan_bg(), "\x1b[106m hello \x1b[49m");
-/// assert_eq!(" hello ".simple_hi_white_bg(), "\x1b[107m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_black(), "\x1b[40m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_red(), "\x1b[41m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_green(), "\x1b[42m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_yellow(), "\x1b[43m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_blue(), "\x1b[44m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_magenta(), "\x1b[45m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_cyan(), "\x1b[46m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_white(), "\x1b[47m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_hi_black(), "\x1b[100m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_hi_red(), "\x1b[101m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_hi_green(), "\x1b[102m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_hi_yellow(), "\x1b[103m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_hi_blue(), "\x1b[104m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_hi_magenta(), "\x1b[105m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_hi_cyan(), "\x1b[106m hello \x1b[49m");
+/// assert_eq!(" hello ".simple_bg_hi_white(), "\x1b[107m hello \x1b[49m");
 /// ```
 pub trait SimpleBackground: Decorate {
     fn simple_bg_black(&self) -> String {
@@ -218,7 +239,7 @@ pub trait SimpleBackground: Decorate {
         self.wrap(background::GREEN, cancel::BACKGROUND)
     }
 
-    fn simpl_bg_yellow(&self) -> String {
+    fn simple_bg_yellow(&self) -> String {
         self.wrap(background::YELLOW, cancel::BACKGROUND)
     }
 
@@ -250,7 +271,7 @@ pub trait SimpleBackground: Decorate {
         self.wrap(background::BRIGHT_GREEN, cancel::BACKGROUND)
     }
 
-    fn simple_hi_yellow_bg(&self) -> String {
+    fn simple_bg_hi_yellow(&self) -> String {
         self.wrap(background::BRIGHT_YELLOW, cancel::BACKGROUND)
     }
 

@@ -14,15 +14,15 @@ pub struct RGBColor {
 pub trait SimpleCustomColor: Decorate {
     fn rgb(&self, color: RGBColor) -> String {
         self.wrap(
-            foreground_rgb(color.r, color.g, color.b).as_str(),
-            escape!(cancel::FOREGROUND).as_str(),
+            foreground_rgb(color.r, color.g, color.b),
+            escape!(cancel::FOREGROUND),
         )
     }
 
     fn bg_rgb(&self, color: RGBColor) -> String {
         self.wrap(
-            background_rgb(color.r, color.g, color.b).as_str(),
-            escape!(cancel::BACKGROUND).as_str(),
+            background_rgb(color.r, color.g, color.b),
+            escape!(cancel::BACKGROUND),
         )
     }
 }

@@ -1,5 +1,10 @@
 use crate::{cancel, custom::*, decorate::Decorate};
 
+/// It's strongly recommended to initialize a [RGBColor] object,
+/// and use it for further decorations, to make clear what color
+/// you are exactly use during the whole application's lifetime.
+///
+/// You can initialize the color with [RGBColor::from] method.
 #[derive(Clone, Copy)]
 pub struct RGBColor {
     pub r: u8,

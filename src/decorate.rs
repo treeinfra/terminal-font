@@ -30,15 +30,23 @@ pub trait Decorate {
     /// let prefix_string = String::from(prefix);
     /// let suffix_string = String::from(suffix);
     /// assert_eq!("hello".wrap(prefix, suffix), "[hello]");
-    /// // assert_eq!("hello".wrap(prefix, suffix_string), "[hello]");
-    /// // assert_eq!("hello".wrap(prefix_string, suffix), "[hello]");
-    /// assert_eq!("hello".wrap(prefix_string, suffix_string), "[hello]");
+    /// assert_eq!("hello".wrap(prefix, &suffix_string), "[hello]");
+    /// assert_eq!("hello".wrap(&prefix_string, suffix), "[hello]");
+    /// // assert_eq!("hello".wrap(prefix_string, suffix_string), "[hello]");
     /// ```
-    fn wrap<T: AsRef<str>>(&self, prefix: T, suffix: T) -> String;
+    fn wrap<T: AsRef<str>, U: AsRef<str>>(
+        &self,
+        prefix: T,
+        suffix: U,
+    ) -> String;
 }
 
 impl<T: AsRef<str>> Decorate for T {
-    fn wrap<U: AsRef<str>>(&self, prefix: U, suffix: U) -> String {
+    fn wrap<U: AsRef<str>, V: AsRef<str>>(
+        &self,
+        prefix: U,
+        suffix: V,
+    ) -> String {
         format!("{}{}{}", prefix.as_ref(), self.as_ref(), suffix.as_ref())
     }
 }

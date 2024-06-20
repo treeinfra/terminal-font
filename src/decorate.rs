@@ -73,42 +73,61 @@ impl<T: AsRef<str>> Decorate for T {
 /// assert_eq!(" hello ".simple_double_underline(), "\x1b[21m hello \x1b[24m");
 /// ```
 pub trait SimpleStyle: Decorate {
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_bold(&self) -> String {
         self.wrap(BOLD, cancel::BOLD_OR_FAINT)
     }
 
+    /// Also known as dim.
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_faint(&self) -> String {
         self.wrap(FAINT, cancel::BOLD_OR_FAINT)
     }
 
+    /// Also known as oblique.
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_italic(&self) -> String {
         self.wrap(ITALIC, cancel::ITALIC)
     }
 
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_underline(&self) -> String {
         self.wrap(UNDERLINE, cancel::UNDERLINE)
     }
 
+    /// Usually unsupported by build-in terminals of common editors.
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_blink(&self) -> String {
         self.wrap(BLINK, cancel::BLINK)
     }
 
+    /// Usually unsupported by common terminals.
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_blink_fast(&self) -> String {
         self.wrap(BLINK_FAST, cancel::BLINK)
     }
 
+    /// Also known as negative.
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_inverse(&self) -> String {
         self.wrap(INVERSE, cancel::INVERSE)
     }
 
+    /// Also known as hidden.
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_conceal(&self) -> String {
         self.wrap(CONCEAL, cancel::CONCEAL)
     }
 
+    /// Also known as delete line.
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_strikethrough(&self) -> String {
         self.wrap(STRIKETHROUGH, cancel::STRIKETHROUGH)
     }
 
+    /// Usually unsupported by common terminals,
+    /// and sometimes displayed as a thick underline.
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_double_underline(&self) -> String {
         self.wrap(DOUBLE_UNDERLINE, cancel::UNDERLINE)
     }

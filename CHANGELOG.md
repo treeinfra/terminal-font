@@ -1,3 +1,9 @@
+## 0.2.0
+
+- Simplify unnecessary `simple` prefix.
+- Alias of styles.
+- Function encapsulations.
+
 ## 0.1.0
 
 - Custom colors.

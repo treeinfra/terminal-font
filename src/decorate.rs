@@ -158,6 +158,43 @@ pub trait SimpleStyle: Decorate {
     }
 }
 
+/// Aliases for some of the methods in the [SimpleStyle] trait.
+///
+/// ```rust
+/// use terminal_font::decorate::SimpleStyleAlias;
+/// assert_eq!(" hello ".simple_dim(), "\x1b[2m hello \x1b[22m");
+/// assert_eq!(" hello ".oblique(), "\x1b[3m hello \x1b[23m");
+/// assert_eq!(" hello ".negative(), "\x1b[7m hello \x1b[27m");
+/// assert_eq!(" hello ".hidden(), "\x1b[8m hello \x1b[28m");
+/// assert_eq!(" hello ".delete_line(), "\x1b[9m hello \x1b[29m");
+/// ```
+pub trait SimpleStyleAlias: SimpleStyle {
+    /// Alias of [SimpleStyle::simple_faint].
+    fn simple_dim(&self) -> String {
+        self.simple_faint()
+    }
+
+    /// Alias of [SimpleStyle::italic].
+    fn oblique(&self) -> String {
+        self.italic()
+    }
+
+    /// Alias of [SimpleStyle::inverse].
+    fn negative(&self) -> String {
+        self.inverse()
+    }
+
+    /// Alias of [SimpleStyle::conceal].
+    fn hidden(&self) -> String {
+        self.conceal()
+    }
+
+    /// Alias of [SimpleStyle::strikethrough].
+    fn delete_line(&self) -> String {
+        self.strikethrough()
+    }
+}
+
 /// Encapsulation on the [Decorate] trait with
 /// commonly used escape codes for foreground color decorations.
 ///
@@ -345,5 +382,6 @@ pub trait SimpleBackground: Decorate {
 }
 
 impl<T: Decorate + AsRef<str>> SimpleStyle for T {}
+impl<T: Decorate + AsRef<str>> SimpleStyleAlias for T {}
 impl<T: Decorate + AsRef<str>> SimpleForeground for T {}
 impl<T: Decorate + AsRef<str>> SimpleBackground for T {}

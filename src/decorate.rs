@@ -2,7 +2,7 @@
 //! As for the customized colors, please refer to the [custom_color] module.
 //! And as for the safe decorate, please refer to the [render] module.
 //!
-//! ## About render style risk and performance
+//! ## Render style risk and performance
 //!
 //! Once there's complex escape decorations inside a string,
 //! there might be conflicts or overrides,
@@ -11,6 +11,8 @@
 //! Current mod doesn't concern such risk.
 //! Because current mod is designed for better performance.
 //! If you do need to prevent such risk, please refer to the [render] module.
+//!
+//! ## The `simple` name prefix
 //!
 //! All decoration functions and methods
 //! with such risk will have a `simple` prefix.
@@ -21,8 +23,7 @@
 
 use crate::escape::{background, cancel, foreground, style::*};
 
-// Imported for docs only.
-#[allow(unused_imports)]
+#[allow(unused_imports)] // Docs only.
 use crate::{custom_color, render};
 
 pub trait Decorate {

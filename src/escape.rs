@@ -8,8 +8,7 @@
 //! For common utilities, you may refer to encapsulations
 //! inside the [decorate] and [render] mod.
 
-// Imported for docs only.
-#[allow(unused_imports)]
+#[allow(unused_imports)] // Docs only.
 use crate::{custom_color, decorate, escape, render};
 
 /// Generate ANSI escape sequence according to the given parameters.

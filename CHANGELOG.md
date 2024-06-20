@@ -3,6 +3,7 @@
 - Simplify unnecessary `simple` prefix.
 - Alias of styles.
 - Function encapsulations.
+- Documentation for mods.
 
 ## 0.1.0
 

@@ -99,18 +99,19 @@ impl<T: AsRef<str>> Decorate for T {
 /// assert_eq!(" hello ".simple_double_underline(), "\x1b[21m hello \x1b[24m");
 /// ```
 pub trait SimpleStyle: Decorate {
+    /// Also known as [SimpleStyleAlias::simple_heavy].
     /// See the documentation of the trait: [SimpleStyle].
     fn simple_bold(&self) -> String {
         self.wrap(BOLD, cancel::BOLD_OR_FAINT)
     }
 
-    /// Also known as dim.
+    /// Also known as [SimpleStyleAlias::simple_dim].
     /// See the documentation of the trait: [SimpleStyle].
     fn simple_faint(&self) -> String {
         self.wrap(FAINT, cancel::BOLD_OR_FAINT)
     }
 
-    /// Also known as oblique.
+    /// Also known as [SimpleStyleAlias::oblique].
     /// See the documentation of the trait: [SimpleStyle].
     fn italic(&self) -> String {
         self.wrap(ITALIC, cancel::ITALIC)
@@ -133,19 +134,19 @@ pub trait SimpleStyle: Decorate {
         self.wrap(BLINK_FAST, cancel::BLINK)
     }
 
-    /// Also known as negative.
+    /// Also known as [SimpleStyleAlias::negative].
     /// See the documentation of the trait: [SimpleStyle].
     fn inverse(&self) -> String {
         self.wrap(INVERSE, cancel::INVERSE)
     }
 
-    /// Also known as hidden.
+    /// Also known as [SimpleStyleAlias::hidden].
     /// See the documentation of the trait: [SimpleStyle].
     fn conceal(&self) -> String {
         self.wrap(CONCEAL, cancel::CONCEAL)
     }
 
-    /// Also known as delete line.
+    /// Also known as [SimpleStyleAlias::delete_line].
     /// See the documentation of the trait: [SimpleStyle].
     fn strikethrough(&self) -> String {
         self.wrap(STRIKETHROUGH, cancel::STRIKETHROUGH)

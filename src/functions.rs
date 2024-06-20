@@ -6,19 +6,23 @@ use crate::{decorate, render};
 
 pub mod simple_style {
     #[allow(unused_imports)] // Docs only.
-    use crate::decorate;
+    use crate::{decorate, functions::simple_style_alias::*};
+
     use crate::decorate::*;
 
+    /// Also known as [simple_heavy].
     /// See [decorate] about what does `simple` name prefix means.
     pub fn simple_bold<T: AsRef<str>>(raw: T) -> String {
         raw.simple_bold()
     }
 
+    /// Also known as [simple_dim].
     /// See [decorate] about what does `simple` name prefix means.
     pub fn simple_faint<T: AsRef<str>>(raw: T) -> String {
         raw.simple_faint()
     }
 
+    /// Also know as [oblique].
     /// See [decorate] about what does `simple` name prefix means.
     pub fn italic<T: AsRef<str>>(raw: T) -> String {
         raw.italic()
@@ -39,16 +43,19 @@ pub mod simple_style {
         raw.simple_blink_fast()
     }
 
+    /// Also known as [negative].
     /// See [decorate] about what does `simple` name prefix means.
     pub fn inverse<T: AsRef<str>>(raw: T) -> String {
         raw.inverse()
     }
 
+    /// Also known as [hidden].
     /// See [decorate] about what does `simple` name prefix means.
     pub fn conceal<T: AsRef<str>>(raw: T) -> String {
         raw.conceal()
     }
 
+    /// Also known as [delete_line].
     /// See [decorate] about what does `simple` name prefix means.
     pub fn strikethrough<T: AsRef<str>>(raw: T) -> String {
         raw.strikethrough()
@@ -57,34 +64,41 @@ pub mod simple_style {
 
 pub mod simple_style_alias {
     #[allow(unused_imports)] // Docs only.
-    use crate::decorate;
+    use crate::{decorate, functions::simple_style::*};
+
     use crate::decorate::*;
 
+    /// Alias of [simple_bold].
     /// See [decorate] about what does `simple` name prefix means.
     pub fn simple_heavy<T: AsRef<str>>(raw: T) -> String {
         raw.simple_heavy()
     }
 
+    /// Alias of [simple_faint].
     /// See [decorate] about what does `simple` name prefix means.
     pub fn simple_dim<T: AsRef<str>>(raw: T) -> String {
         raw.simple_dim()
     }
 
+    /// Alias of [italic].
     /// See [decorate] about what does `simple` name prefix means.
     pub fn oblique<T: AsRef<str>>(raw: T) -> String {
         raw.oblique()
     }
 
+    /// Alias of [inverse].
     /// See [decorate] about what does `simple` name prefix means.
     pub fn negative<T: AsRef<str>>(raw: T) -> String {
         raw.negative()
     }
 
+    /// Alias of [conceal].
     /// See [decorate] about what does `simple` name prefix means.
     pub fn hidden<T: AsRef<str>>(raw: T) -> String {
         raw.hidden()
     }
 
+    /// Alias of [strikethrough].
     /// See [decorate] about what does `simple` name prefix means.
     pub fn delete_line<T: AsRef<str>>(raw: T) -> String {
         raw.delete_line()

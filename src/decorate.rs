@@ -63,13 +63,13 @@ impl<T: AsRef<str>> Decorate for T {
 /// use terminal_font::decorate::SimpleStyle;
 /// assert_eq!(" hello ".simple_bold(), "\x1b[1m hello \x1b[22m");
 /// assert_eq!(" hello ".simple_faint(), "\x1b[2m hello \x1b[22m");
-/// assert_eq!(" hello ".simple_italic(), "\x1b[3m hello \x1b[23m");
+/// assert_eq!(" hello ".italic(), "\x1b[3m hello \x1b[23m");
 /// assert_eq!(" hello ".simple_underline(), "\x1b[4m hello \x1b[24m");
 /// assert_eq!(" hello ".simple_blink(), "\x1b[5m hello \x1b[25m");
 /// assert_eq!(" hello ".simple_blink_fast(), "\x1b[6m hello \x1b[25m");
-/// assert_eq!(" hello ".simple_inverse(), "\x1b[7m hello \x1b[27m");
-/// assert_eq!(" hello ".simple_conceal(), "\x1b[8m hello \x1b[28m");
-/// assert_eq!(" hello ".simple_strikethrough(), "\x1b[9m hello \x1b[29m");
+/// assert_eq!(" hello ".inverse(), "\x1b[7m hello \x1b[27m");
+/// assert_eq!(" hello ".conceal(), "\x1b[8m hello \x1b[28m");
+/// assert_eq!(" hello ".strikethrough(), "\x1b[9m hello \x1b[29m");
 /// assert_eq!(" hello ".simple_double_underline(), "\x1b[21m hello \x1b[24m");
 /// ```
 pub trait SimpleStyle: Decorate {
@@ -86,7 +86,7 @@ pub trait SimpleStyle: Decorate {
 
     /// Also known as oblique.
     /// See the documentation of the trait: [SimpleStyle].
-    fn simple_italic(&self) -> String {
+    fn italic(&self) -> String {
         self.wrap(ITALIC, cancel::ITALIC)
     }
 
@@ -109,19 +109,19 @@ pub trait SimpleStyle: Decorate {
 
     /// Also known as negative.
     /// See the documentation of the trait: [SimpleStyle].
-    fn simple_inverse(&self) -> String {
+    fn inverse(&self) -> String {
         self.wrap(INVERSE, cancel::INVERSE)
     }
 
     /// Also known as hidden.
     /// See the documentation of the trait: [SimpleStyle].
-    fn simple_conceal(&self) -> String {
+    fn conceal(&self) -> String {
         self.wrap(CONCEAL, cancel::CONCEAL)
     }
 
     /// Also known as delete line.
     /// See the documentation of the trait: [SimpleStyle].
-    fn simple_strikethrough(&self) -> String {
+    fn strikethrough(&self) -> String {
         self.wrap(STRIKETHROUGH, cancel::STRIKETHROUGH)
     }
 

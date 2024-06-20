@@ -170,6 +170,11 @@ pub trait SimpleStyle: Decorate {
 /// assert_eq!(" hello ".delete_line(), "\x1b[9m hello \x1b[29m");
 /// ```
 pub trait SimpleStyleAlias: SimpleStyle {
+    /// Alias of [SimpleStyle::simple_bold].
+    fn simple_heavy(&self) -> String {
+        self.simple_bold()
+    }
+
     /// Alias of [SimpleStyle::simple_faint].
     fn simple_dim(&self) -> String {
         self.simple_faint()

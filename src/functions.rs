@@ -61,6 +61,11 @@ pub mod simple_style_alias {
     use crate::decorate::*;
 
     /// See [decorate] about what does `simple` name prefix means.
+    pub fn simple_heavy<T: AsRef<str>>(raw: T) -> String {
+        raw.simple_heavy()
+    }
+
+    /// See [decorate] about what does `simple` name prefix means.
     pub fn simple_dim<T: AsRef<str>>(raw: T) -> String {
         raw.simple_dim()
     }

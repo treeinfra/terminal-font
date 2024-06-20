@@ -1,4 +1,30 @@
+//! This mod only contains basic simple decoration functions and methods.
+//! As for the customized colors, please refer to the [custom_color] module.
+//! And as for the safe decorate, please refer to the [render] module.
+//!
+//! ## Render style risk and performance
+//!
+//! Once there's complex escape decorations inside a string,
+//! there might be conflicts or overrides,
+//! that just wrapping such string with corresponding escape codes
+//! might made mistake styles.
+//! Current mod doesn't concern such risk.
+//! Because current mod is designed for better performance.
+//! If you do need to prevent such risk, please refer to the [render] module.
+//!
+//! ## The `simple` name prefix
+//!
+//! All decoration functions and methods
+//! with such risk will have a `simple` prefix.
+//! If a function or method inside this mod doesn't has the `simple` prefix,
+//! it means it's safe even just wrapping them
+//! without parsing the inner structure.
+//! This is guaranteed by the ansi escape rule.
+
 use crate::escape::{background, cancel, foreground, style::*};
+
+#[allow(unused_imports)] // Docs only.
+use crate::{custom_color, render};
 
 pub trait Decorate {
     /// Simply wrap a prefix and a suffix.
@@ -16,10 +42,10 @@ pub trait Decorate {
     /// ## Generics and performance
     ///
     /// The input parameters `prefix` and `suffix`, and even the `self`,
-    /// can either be &[str] or [String] ([AsRef<T>]).
+    /// can either be &[str] or [String] ([AsRef]<[str]>).
     /// Such generics will not have bad effect on performance
     /// because when formatting, a [String] will be converted into &[str].
-    /// And when calling [AsRef<T>::as_ref] on &[str],
+    /// And when calling [AsRef::as_ref] on &[str],
     /// it will just return itself, and such process will be optimized
     /// by the compiler, especially in production mode.
     ///
@@ -63,54 +89,116 @@ impl<T: AsRef<str>> Decorate for T {
 /// use terminal_font::decorate::SimpleStyle;
 /// assert_eq!(" hello ".simple_bold(), "\x1b[1m hello \x1b[22m");
 /// assert_eq!(" hello ".simple_faint(), "\x1b[2m hello \x1b[22m");
-/// assert_eq!(" hello ".simple_italic(), "\x1b[3m hello \x1b[23m");
+/// assert_eq!(" hello ".italic(), "\x1b[3m hello \x1b[23m");
 /// assert_eq!(" hello ".simple_underline(), "\x1b[4m hello \x1b[24m");
 /// assert_eq!(" hello ".simple_blink(), "\x1b[5m hello \x1b[25m");
 /// assert_eq!(" hello ".simple_blink_fast(), "\x1b[6m hello \x1b[25m");
-/// assert_eq!(" hello ".simple_inverse(), "\x1b[7m hello \x1b[27m");
-/// assert_eq!(" hello ".simple_conceal(), "\x1b[8m hello \x1b[28m");
-/// assert_eq!(" hello ".simple_strikethrough(), "\x1b[9m hello \x1b[29m");
+/// assert_eq!(" hello ".inverse(), "\x1b[7m hello \x1b[27m");
+/// assert_eq!(" hello ".conceal(), "\x1b[8m hello \x1b[28m");
+/// assert_eq!(" hello ".strikethrough(), "\x1b[9m hello \x1b[29m");
 /// assert_eq!(" hello ".simple_double_underline(), "\x1b[21m hello \x1b[24m");
 /// ```
 pub trait SimpleStyle: Decorate {
+    /// Also known as [SimpleStyleAlias::simple_heavy].
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_bold(&self) -> String {
         self.wrap(BOLD, cancel::BOLD_OR_FAINT)
     }
 
+    /// Also known as [SimpleStyleAlias::simple_dim].
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_faint(&self) -> String {
         self.wrap(FAINT, cancel::BOLD_OR_FAINT)
     }
 
-    fn simple_italic(&self) -> String {
+    /// Also known as [SimpleStyleAlias::oblique].
+    /// See the documentation of the trait: [SimpleStyle].
+    fn italic(&self) -> String {
         self.wrap(ITALIC, cancel::ITALIC)
     }
 
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_underline(&self) -> String {
         self.wrap(UNDERLINE, cancel::UNDERLINE)
     }
 
+    /// Usually unsupported by build-in terminals of common editors.
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_blink(&self) -> String {
         self.wrap(BLINK, cancel::BLINK)
     }
 
+    /// Usually unsupported by common terminals.
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_blink_fast(&self) -> String {
         self.wrap(BLINK_FAST, cancel::BLINK)
     }
 
-    fn simple_inverse(&self) -> String {
+    /// Also known as [SimpleStyleAlias::negative].
+    /// See the documentation of the trait: [SimpleStyle].
+    fn inverse(&self) -> String {
         self.wrap(INVERSE, cancel::INVERSE)
     }
 
-    fn simple_conceal(&self) -> String {
+    /// Also known as [SimpleStyleAlias::hidden].
+    /// See the documentation of the trait: [SimpleStyle].
+    fn conceal(&self) -> String {
         self.wrap(CONCEAL, cancel::CONCEAL)
     }
 
-    fn simple_strikethrough(&self) -> String {
+    /// Also known as [SimpleStyleAlias::delete_line].
+    /// See the documentation of the trait: [SimpleStyle].
+    fn strikethrough(&self) -> String {
         self.wrap(STRIKETHROUGH, cancel::STRIKETHROUGH)
     }
 
+    /// Usually unsupported by common terminals,
+    /// and sometimes displayed as a thick underline.
+    /// See the documentation of the trait: [SimpleStyle].
     fn simple_double_underline(&self) -> String {
         self.wrap(DOUBLE_UNDERLINE, cancel::UNDERLINE)
+    }
+}
+
+/// Aliases for some of the methods in the [SimpleStyle] trait.
+///
+/// ```rust
+/// use terminal_font::decorate::SimpleStyleAlias;
+/// assert_eq!(" hello ".simple_dim(), "\x1b[2m hello \x1b[22m");
+/// assert_eq!(" hello ".oblique(), "\x1b[3m hello \x1b[23m");
+/// assert_eq!(" hello ".negative(), "\x1b[7m hello \x1b[27m");
+/// assert_eq!(" hello ".hidden(), "\x1b[8m hello \x1b[28m");
+/// assert_eq!(" hello ".delete_line(), "\x1b[9m hello \x1b[29m");
+/// ```
+pub trait SimpleStyleAlias: SimpleStyle {
+    /// Alias of [SimpleStyle::simple_bold].
+    fn simple_heavy(&self) -> String {
+        self.simple_bold()
+    }
+
+    /// Alias of [SimpleStyle::simple_faint].
+    fn simple_dim(&self) -> String {
+        self.simple_faint()
+    }
+
+    /// Alias of [SimpleStyle::italic].
+    fn oblique(&self) -> String {
+        self.italic()
+    }
+
+    /// Alias of [SimpleStyle::inverse].
+    fn negative(&self) -> String {
+        self.inverse()
+    }
+
+    /// Alias of [SimpleStyle::conceal].
+    fn hidden(&self) -> String {
+        self.conceal()
+    }
+
+    /// Alias of [SimpleStyle::strikethrough].
+    fn delete_line(&self) -> String {
+        self.strikethrough()
     }
 }
 
@@ -301,5 +389,6 @@ pub trait SimpleBackground: Decorate {
 }
 
 impl<T: Decorate + AsRef<str>> SimpleStyle for T {}
+impl<T: Decorate + AsRef<str>> SimpleStyleAlias for T {}
 impl<T: Decorate + AsRef<str>> SimpleForeground for T {}
 impl<T: Decorate + AsRef<str>> SimpleBackground for T {}

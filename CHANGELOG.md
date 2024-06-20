@@ -1,3 +1,11 @@
+## 0.2.0
+
+- Simplify unnecessary `simple` prefix.
+- Alias of styles.
+- Function encapsulations.
+- Documentation for mods.
+- Optimize review script.
+
 ## 0.1.0
 
 - Custom colors.

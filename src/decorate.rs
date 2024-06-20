@@ -1,4 +1,29 @@
+//! This mod only contains basic simple decoration functions and methods.
+//! As for the customized colors, please refer to the [custom_color] module.
+//! And as for the safe decorate, please refer to the [render] module.
+//!
+//! ## About render style risk and performance
+//!
+//! Once there's complex escape decorations inside a string,
+//! there might be conflicts or overrides,
+//! that just wrapping such string with corresponding escape codes
+//! might made mistake styles.
+//! Current mod doesn't concern such risk.
+//! Because current mod is designed for better performance.
+//! If you do need to prevent such risk, please refer to the [render] module.
+//!
+//! All decoration functions and methods
+//! with such risk will have a `simple` prefix.
+//! If a function or method inside this mod doesn't has the `simple` prefix,
+//! it means it's safe even just wrapping them
+//! without parsing the inner structure.
+//! This is guaranteed by the ansi escape rule.
+
 use crate::escape::{background, cancel, foreground, style::*};
+
+// Imported for docs only.
+#[allow(unused_imports)]
+use crate::{custom_color, render};
 
 pub trait Decorate {
     /// Simply wrap a prefix and a suffix.
@@ -16,10 +41,10 @@ pub trait Decorate {
     /// ## Generics and performance
     ///
     /// The input parameters `prefix` and `suffix`, and even the `self`,
-    /// can either be &[str] or [String] ([AsRef<T>]).
+    /// can either be &[str] or [String] ([AsRef]<[str]>).
     /// Such generics will not have bad effect on performance
     /// because when formatting, a [String] will be converted into &[str].
-    /// And when calling [AsRef<T>::as_ref] on &[str],
+    /// And when calling [AsRef::as_ref] on &[str],
     /// it will just return itself, and such process will be optimized
     /// by the compiler, especially in production mode.
     ///

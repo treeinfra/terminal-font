@@ -4,6 +4,7 @@
 - Alias of styles.
 - Function encapsulations.
 - Documentation for mods.
+- Optimize review script.
 
 ## 0.1.0
 
